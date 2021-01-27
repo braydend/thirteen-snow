@@ -1,26 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
-import FirebaseProvider from './firebase/FirebaseProvider';
 import Auth from './Auth';
+import UserProvider, { useUser } from './context/UserProvider';
 
-interface AppProps {}
+function App() {
+  const { user, loading } = useUser();
 
-function App({}: AppProps) {
-  // Create the count state.
-  const [count, setCount] = useState(0);
-  // Create the counter (+1 every second).
-  useEffect(() => {
-    const timer = setTimeout(() => setCount(count + 1), 1000);
-    return () => clearTimeout(timer);
-  }, [count, setCount]);
-  // Return the App component.
+  if (loading) return <div>Loading...</div>;
+
   return (
-    <FirebaseProvider>
-      <div className="App">
-        <Auth />
-      </div>
-    </FirebaseProvider>
+    <div className="App">
+      {user && <span>{user.email}</span>}
+      <Auth />
+    </div>
   );
 }
 
